@@ -1,0 +1,20 @@
+{
+  "name": "covid19-backend",
+  "version": "1.0.0",
+  "type": "module", 
+  "description": "Backend to schedule coronavirus vaccine, proposed by Pitang Agile IT's Trainee Project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "repository": "git@github.com:thaisclxt/covid19-backend.git",
+  "author": "thais.calixto <thais.calixto@mail.uft.edu.br>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
