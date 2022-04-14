@@ -1,4 +1,7 @@
 import express from "express";
+import patients from "./model/PatientModel.js";
+
+console.log(patients);
 
 const PORT = 3000;
 
