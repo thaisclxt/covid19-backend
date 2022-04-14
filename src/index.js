@@ -1,7 +1,5 @@
 import express from "express";
-import patients from "./model/PatientModel.js";
-
-console.log(patients);
+import patientController from "./controller/PatientController.js";
 
 const PORT = 3000;
 
@@ -12,3 +10,5 @@ app.listen();
 app.listen(PORT, () => {
 	console.log(`Server running on PORT ${PORT}`);
 });
+
+patientController.function();
