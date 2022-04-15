@@ -3,6 +3,6 @@ import patientController from "../controller/PatientController.js";
 
 const router = express.Router();
 
-router.get("/api/patient", patientController.function);
+router.get("/api/patients", patientController.getAll);
 
 export default router;

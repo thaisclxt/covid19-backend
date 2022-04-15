@@ -1,8 +1,8 @@
 import patients from "../model/PatientModel.js";
 
 const controller = {
-	function() {
-		console.log(patients);
+	getAll(request, response) {
+		response.send({ patients });
 	},
 };
 
