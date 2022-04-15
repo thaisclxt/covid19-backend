@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import morgan from "morgan";
 
 import patientRouter from "./router/PatientRouter.js";
 
@@ -21,6 +22,7 @@ mongoose
 const app = express();
 
 app.use(express.json({}));
+app.use(morgan("dev"));
 app.use(patientRouter);
 
 app.listen(PORT, () => {
