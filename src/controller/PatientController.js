@@ -37,13 +37,19 @@ class PatientController {
 		try {
 			const { name, birthDate, scheduleDate } = request.body;
 
-			const patient = await patientModel.create({
-				name,
-				birthDate,
-				scheduleDate,
-			});
+			if ((await scheduleOnDate(scheduleDate)).length < 20) {
+				const patient = await patientModel.create({
+					name,
+					birthDate,
+					scheduleDate,
+				});
 
-			response.send({ message: "Patient created", patient });
+				response.send({ message: "Patient scheduled", patient });
+			} else {
+				response
+					.status(422)
+					.send({ message: "Limit of 20 patients per day reached" });
+			}
 		} catch (error) {
 			response.status(500).send({ message: "Something went wrong" });
 			console.log(error);
