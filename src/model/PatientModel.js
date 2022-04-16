@@ -1,13 +1,12 @@
-import crypto from "crypto";
+import mongoose from "mongoose";
 
-const patients = [
-	{
-		id: crypto.randomUUID(),
-		name: "Thaís",
-		bithDate: new Date("2000-12-07"),
-		scheduleDate: new Date("2022-04-20T03:00:00"),
-		wasVaccinated: false,
-	},
-];
+const patientSchema = new mongoose.Schema({
+	name: { type: String, required: true },
+	birthDate: { type: Date, required: true },
+	scheduleDate: { type: Date, required: true },
+	wasVaccinated: { type: Boolean, default: false },
+});
 
-export default patients;
+const patientModel = mongoose.model("patient", patientSchema);
+
+export default patientModel;
