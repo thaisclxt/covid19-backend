@@ -1,53 +1,47 @@
-import crypto from "crypto";
-import patients from "../model/PatientModel.js";
+import patientModel from "../model/PatientModel.js";
 
-const controller = {
-	getAll(request, response) {
+class PatientController {
+	async getAll(request, response) {
+		const patients = await patientModel.find();
 		response.send({ patients });
-	},
+	}
 
-	schedule(request, response) {
+	async schedule(request, response) {
 		try {
-			const { name, bithDate, scheduleDate } = request.body;
+			const { name, birthDate, scheduleDate } = request.body;
 
-			const patient = {
-				id: crypto.randomUUID(),
+			const patient = await patientModel.create({
 				name,
-				bithDate,
+				birthDate,
 				scheduleDate,
-				wasVaccinated: false,
-			};
+			});
 
-			patients.push(patient);
-			response.send({ message: "Patient created" });
+			response.send({ message: "Patient created", patient: patient });
 		} catch (error) {
 			response.status(500).send({ message: "Something went wrong" });
 			console.log(error);
 		}
-	},
+	}
 
-	update(request, response) {
+	async update(request, response) {
 		try {
 			const { id } = request.params;
-			const { name, bithDate, scheduleDate, wasVaccinated } = request.body;
+			const { wasVaccinated } = request.body;
 
-			const patientIndex = patients.findIndex((patient) => patient.id === id);
+			const patient = await patientModel.findByIdAndUpdate(
+				id,
+				{
+					wasVaccinated,
+				},
+				{ new: true }
+			);
 
-			if (!patients[patientIndex])
-				return response.status(404).send({ message: "Patient not found" });
-
-			const newPatient = {
-				...patients[patientIndex],
-				wasVaccinated,
-			};
-
-			patients[patientIndex] = newPatient;
-			response.send({ patient: patients[patientIndex] });
+			response.send({ message: "Patient updated", patient: patient });
 		} catch (error) {
 			response.status(500).send({ message: "Something went wrong" });
 			console.log(error);
 		}
-	},
-};
+	}
+}
 
-export default controller;
+export default PatientController;
