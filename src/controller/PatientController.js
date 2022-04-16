@@ -13,6 +13,21 @@ async function scheduleOnDate(day) {
 	return scheduleOnDate;
 }
 
+async function scheduleOnHour(date) {
+	const scheduleHourStart = new Date(
+		date.substring(0, 13).concat(":00:00.000Z")
+	);
+	const scheduleHourEnd = new Date(
+		scheduleHourStart.getTime() + 60 * 60 * 1000
+	);
+
+	const scheduleOnHour = await patientModel.find({
+		scheduleDate: { $gte: scheduleHourStart, $lt: scheduleHourEnd },
+	});
+
+	return scheduleOnHour;
+}
+
 class PatientController {
 	async getAll(request, response) {
 		const patients = await patientModel.find();
@@ -38,13 +53,19 @@ class PatientController {
 			const { name, birthDate, scheduleDate } = request.body;
 
 			if ((await scheduleOnDate(scheduleDate)).length < 20) {
-				const patient = await patientModel.create({
-					name,
-					birthDate,
-					scheduleDate,
-				});
+				if ((await scheduleOnHour(scheduleDate)).length < 2) {
+					const patient = await patientModel.create({
+						name,
+						birthDate,
+						scheduleDate,
+					});
 
-				response.send({ message: "Patient scheduled", patient });
+					response.send({ message: "Patient scheduled", patient });
+				} else {
+					response
+						.status(422)
+						.send({ message: "Limit of 2 patients per hour reached" });
+				}
 			} else {
 				response
 					.status(422)
