@@ -5,6 +5,7 @@ Description: _Application to schedule coronavirus vaccine, proposed by Pitang Ag
 Project: [COVID19](https://github.com/users/thaisclxt/projects/2)
 
 - Project linked to this repository based on Kanbam cards with issues for each branch and linked pull requests
+- You can see the timeline of the most recent commits to this repository and its network ordered by most recently pushed to, on [Network Graph](https://github.com/thaisclxt/covid19-backend/network)
 
 ## Database
 
