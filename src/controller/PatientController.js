@@ -1,22 +1,76 @@
 import patientModel from "../model/PatientModel.js";
 
+async function scheduleOnDate(day) {
+	const scheduleDateStart = new Date(day.substring(0, 10));
+	const scheduleDateEnd = new Date(
+		scheduleDateStart.getTime() + 24 * 60 * 60 * 1000
+	);
+
+	const scheduleOnDate = await patientModel.find({
+		scheduleDate: { $gte: scheduleDateStart, $lt: scheduleDateEnd },
+	});
+
+	return scheduleOnDate;
+}
+
+async function scheduleOnHour(date) {
+	const scheduleHourStart = new Date(
+		date.substring(0, 13).concat(":00:00.000Z")
+	);
+	const scheduleHourEnd = new Date(
+		scheduleHourStart.getTime() + 60 * 60 * 1000
+	);
+
+	const scheduleOnHour = await patientModel.find({
+		scheduleDate: { $gte: scheduleHourStart, $lt: scheduleHourEnd },
+	});
+
+	return scheduleOnHour;
+}
+
 class PatientController {
 	async getAll(request, response) {
 		const patients = await patientModel.find();
 		response.send({ patients });
 	}
 
+	async getPatientsOnDay(request, response) {
+		try {
+			const { day } = request.params;
+
+			response.send({
+				message: `Patients scheduled on ${day}`,
+				scheduleOnDate: await scheduleOnDate(day),
+			});
+		} catch (error) {
+			response.status(500).send({ message: "Something went wrong" });
+			console.log(error);
+		}
+	}
+
 	async schedule(request, response) {
 		try {
 			const { name, birthDate, scheduleDate } = request.body;
 
-			const patient = await patientModel.create({
-				name,
-				birthDate,
-				scheduleDate,
-			});
+			if ((await scheduleOnDate(scheduleDate)).length < 20) {
+				if ((await scheduleOnHour(scheduleDate)).length < 2) {
+					const patient = await patientModel.create({
+						name,
+						birthDate,
+						scheduleDate,
+					});
 
-			response.send({ message: "Patient created", patient: patient });
+					response.send({ message: "Patient scheduled", patient });
+				} else {
+					response
+						.status(422)
+						.send({ message: "Limit of 2 patients per hour reached" });
+				}
+			} else {
+				response
+					.status(422)
+					.send({ message: "Limit of 20 patients per day reached" });
+			}
 		} catch (error) {
 			response.status(500).send({ message: "Something went wrong" });
 			console.log(error);
