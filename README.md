@@ -2,6 +2,10 @@
 
 Description: _Application to schedule coronavirus vaccine, proposed by Pitang Agile IT's Trainee Project_
 
+Project: [COVID19](https://github.com/users/thaisclxt/projects/2)
+
+- Project linked to this repository based on Kanbam cards with issues for each branch and linked pull requests
+
 ## Recomended Instalation
 
 1. Make sure you have [Node.js](https://nodejs.org/en/) and [yarn](https://yarnpkg.com/) installed
