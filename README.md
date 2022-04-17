@@ -9,7 +9,7 @@ Project: [COVID19](https://github.com/users/thaisclxt/projects/2)
 
 ## Database
 
-> I'm usign [MongoDB](https://www.mongodb.com/) database on [Docker](https://www.docker.com/). If you already have it on your pc, perfectly, you can jump to "Recomended Insatalation"
+> I'm usign [MongoDB](https://www.mongodb.com/) database on [Docker](https://www.docker.com/). If you already have it on your pc, perfect, you can jump to "Recommended Installation"
 
 ### Commands to create a local MongoDB server with Docker
 
@@ -21,10 +21,12 @@ Project: [COVID19](https://github.com/users/thaisclxt/projects/2)
 
 > I choosed [Mongoose](https://mongoosejs.com/) as a ORM (Object-Relational Mapper) for MongoDB. When `mongoose.connect(DATABASE_URL)` is invoked, the database is created if it doesn't exist
 
-## Recomended Instalation
+## Recommended Instalation
 
 1. Make sure you have [Node.js](https://nodejs.org/en/) and [yarn](https://yarnpkg.com/) installed
 2. Choose a directory on your pc to clone this repository
 3. Run `git clone git@github.com:thaisclxt/covid19-backend.git` on the choosed directory
 4. Run `yarn start` to start the app
-5. Open [http://localhost:3000](http://localhost:3000) to view it in your browser
+5. Open [http://localhost:3000](http://localhost:3000) to view it in your browser or use [Insomnia](https://insomnia.rest/) to have a better experience with HTTP requests, for example:
+
+![GET all - example](./screenshot/getAll.png)
