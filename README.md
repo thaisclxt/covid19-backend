@@ -35,3 +35,8 @@ Project: [COVID19](https://github.com/users/thaisclxt/projects/2)
 7. Open [http://localhost:3000](http://localhost:3000) to view it in your browser or use [Insomnia](https://insomnia.rest/) to have a better experience with HTTP requests, for example:
 
 ![GET all - example](./screenshot/getAll.png)
+
+### Restore database
+
+1. Install [MongoDB Database Tools](https://www.mongodb.com/try/download/database-tools)
+2. Run `mongorestore --db <database_name> dump/covid19`
