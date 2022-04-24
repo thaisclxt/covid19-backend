@@ -1,16 +1,16 @@
 import patientModel from "../model/PatientModel.js";
 
-async function scheduleOnDate(day) {
-	const scheduleDateStart = new Date(day.substring(0, 10));
-	const scheduleDateEnd = new Date(
-		scheduleDateStart.getTime() + 24 * 60 * 60 * 1000
+async function scheduleOnDay(date) {
+	const scheduleDayStart = new Date(date.substring(0, 10));
+	const scheduleDayEnd = new Date(
+		scheduleDayStart.getTime() + 24 * 60 * 60 * 1000
 	);
 
-	const scheduleOnDate = await patientModel.find({
-		scheduleDate: { $gte: scheduleDateStart, $lt: scheduleDateEnd },
+	const scheduleOnDay = await patientModel.find({
+		scheduleDate: { $gte: scheduleDayStart, $lt: scheduleDayEnd },
 	});
 
-	return scheduleOnDate;
+	return scheduleOnDay;
 }
 
 async function scheduleOnHour(date) {
@@ -40,7 +40,21 @@ class PatientController {
 
 			response.send({
 				message: `Patients scheduled on ${day}`,
-				scheduleOnDate: await scheduleOnDate(day),
+				scheduleOnDate: await scheduleOnDay(day),
+			});
+		} catch (error) {
+			response.status(500).send({ message: "Something went wrong" });
+			console.log(error);
+		}
+	}
+
+	async getPatientsOnDate(request, response) {
+		try {
+			const { date } = request.params;
+
+			response.send({
+				message: `Patients scheduled on ${date}`,
+				scheduleOnDayAndHour: await scheduleOnHour(date),
 			});
 		} catch (error) {
 			response.status(500).send({ message: "Something went wrong" });
@@ -52,7 +66,7 @@ class PatientController {
 		try {
 			const { name, birthDate, scheduleDate } = request.body;
 
-			if ((await scheduleOnDate(scheduleDate)).length < 20) {
+			if ((await scheduleOnDay(scheduleDate)).length < 20) {
 				if ((await scheduleOnHour(scheduleDate)).length < 2) {
 					const patient = await patientModel.create({
 						name,
