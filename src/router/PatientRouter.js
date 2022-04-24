@@ -6,8 +6,9 @@ const patientController = new PatientController();
 const router = express.Router();
 
 router.get("/api/patients", patientController.getAll);
-router.get("/api/patients/:day", patientController.getPatientsOnDay);
-router.post("/api/schedule", patientController.schedule);
+router.get("/api/patients/onDay/:day", patientController.getPatientsOnDay);
+router.get("/api/patients/onDate/:date", patientController.getPatientsOnDate);
 router.put("/api/patients/:id", patientController.update);
+router.post("/api/schedule", patientController.schedule);
 
 export default router;
