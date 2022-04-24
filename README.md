@@ -29,10 +29,10 @@ Project: [COVID19](https://github.com/users/thaisclxt/projects/2)
 1. Make sure you have [Node.js](https://nodejs.org/en/) and [yarn](https://yarnpkg.com/) installed
 2. Choose a directory on your pc to clone this repository
 3. Run `git clone git@github.com:thaisclxt/covid19-backend.git` on the choosed directory
-4. RUn `yarn install` to install dependencies
+4. Run `yarn install` to install dependencies
 5. Create a `.env` file based on `.env.example`
 6. Run `yarn start` to start the app
-7. Open [http://localhost:3000](http://localhost:3000) to view it in your browser or use [Insomnia](https://insomnia.rest/) to have a better experience with HTTP requests, for example:
+7. Open [http://localhost:5000](http://localhost:5000) to view it in your browser or use [Insomnia](https://insomnia.rest/) to have a better experience with HTTP requests, for example:
 
 ![GET all - example](./screenshot/getAll.png)
 
