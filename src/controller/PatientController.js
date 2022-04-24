@@ -1,31 +1,18 @@
 import patientModel from "../model/PatientModel.js";
 
-async function scheduleOnDate(day) {
-	const scheduleDateStart = new Date(day.substring(0, 10));
-	const scheduleDateEnd = new Date(
-		scheduleDateStart.getTime() + 24 * 60 * 60 * 1000
-	);
+async function query(schedule_type, date) {
+	let start;
+	let end;
 
-	const scheduleOnDate = await patientModel.find({
-		scheduleDate: { $gte: scheduleDateStart, $lt: scheduleDateEnd },
-	});
+	if (schedule_type === "onDay") {
+		start = new Date(date.substring(0, 10));
+		end = new Date(start.getTime() + 24 * 60 * 60 * 1000);
+	} else {
+		start = new Date(date.substring(0, 13).concat(":00:00.000Z"));
+		end = new Date(start.getTime() + 60 * 60 * 1000);
+	}
 
-	return scheduleOnDate;
-}
-
-async function scheduleOnHour(date) {
-	const scheduleHourStart = new Date(
-		date.substring(0, 13).concat(":00:00.000Z")
-	);
-	const scheduleHourEnd = new Date(
-		scheduleHourStart.getTime() + 60 * 60 * 1000
-	);
-
-	const scheduleOnHour = await patientModel.find({
-		scheduleDate: { $gte: scheduleHourStart, $lt: scheduleHourEnd },
-	});
-
-	return scheduleOnHour;
+	return await patientModel.find({ scheduleDate: { $gte: start, $lt: end } });
 }
 
 class PatientController {
@@ -40,7 +27,21 @@ class PatientController {
 
 			response.send({
 				message: `Patients scheduled on ${day}`,
-				scheduleOnDate: await scheduleOnDate(day),
+				scheduleOnDate: await query("onDay", day),
+			});
+		} catch (error) {
+			response.status(500).send({ message: "Something went wrong" });
+			console.log(error);
+		}
+	}
+
+	async getPatientsOnDate(request, response) {
+		try {
+			const { date } = request.params;
+
+			response.send({
+				message: `Patients scheduled on ${date}`,
+				scheduleOnDayAndHour: await query("onDayAndHour", date),
 			});
 		} catch (error) {
 			response.status(500).send({ message: "Something went wrong" });
@@ -52,8 +53,8 @@ class PatientController {
 		try {
 			const { name, birthDate, scheduleDate } = request.body;
 
-			if ((await scheduleOnDate(scheduleDate)).length < 20) {
-				if ((await scheduleOnHour(scheduleDate)).length < 2) {
+			if ((await query("onDay", scheduleDate)).length < 20) {
+				if ((await query("onHour", scheduleDate)).length < 2) {
 					const patient = await patientModel.create({
 						name,
 						birthDate,
