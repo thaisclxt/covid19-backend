@@ -15,7 +15,7 @@ Project: [COVID19](https://github.com/users/thaisclxt/projects/2)
 2. Open your terminal to create a local MongoDB server
 3. Run `docker volume create <volume_name>` to create a volume
 4. Run `docker run -v <volume_name>:/data/db --name=<container_name> -p 27017:27017 -d mongo:5.0.6` to create a container from MongoDB official image
-5. Run `docker exec -it <container_name> bash` to start a interactive session to be able to access MongoDB from the terminal
+5. Run `docker exec -it <container_mongo_id> bash` to start a interactive session to be able to access MongoDB from the terminal
 6. Now, inside the interactive session, you can run `mongo` to start MongoDB Shell
 7. After clonning the repository on "Recommended Installation", you can see the database typing `show dbs;`
 8. `use <database_name>`, `show collections` and `db.<database_name>.find().preety` to get all document
